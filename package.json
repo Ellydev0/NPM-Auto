@@ -1,0 +1,39 @@
+{
+  "name": "npm-auto",
+  "version": "1.0.0",
+  "description": "CLI for automated npm,yarn,pnpm package installation",
+  "keywords": [
+    "npm-auto",
+    "yarn-auto",
+    "pnpm-auto",
+    "auto"
+  ],
+  "license": "MIT",
+  "author": "Elliot Otoijagha",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "bin": {
+    "npm-auto": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "commander": "^14.0.2",
+    "ora": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11",
+    "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
