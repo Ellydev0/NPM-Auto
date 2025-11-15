@@ -1,17 +1,17 @@
-import type { ConfigType, PackageType, CommandResult } from "./types/index.ts";
+import type { ConfigType, PackageType, CommandResult } from "./types/index.js";
 
 /**
- * Build commands for each project based on its configuration.
+ * Build commands from project configurations.
  */
 
 export function buildCommands(projects: ConfigType[]) {
   // Initialize arrays properly
 
-  const commandResult: CommandResult[] = [];
+  const commandArray: CommandResult[] = [];
   for (const project of projects) {
     const { packageManager, packages } = project;
 
-    const commands = {
+    const commandPrefixes = {
       npm: {
         install: "npm install",
         run: "npx",
@@ -27,7 +27,8 @@ export function buildCommands(projects: ConfigType[]) {
     };
 
     const manager =
-      commands[packageManager as keyof typeof commands] || commands.npm;
+      commandPrefixes[packageManager as keyof typeof commandPrefixes] ||
+      commandPrefixes.npm;
 
     const result: CommandResult = {
       name: project.name,
@@ -60,8 +61,8 @@ export function buildCommands(projects: ConfigType[]) {
       result.nonInteractive.push(`${manager.install} ${packageNames}`);
     }
 
-    commandResult.push(result);
+    commandArray.push(result);
   }
 
-  return commandResult;
+  return commandArray;
 }

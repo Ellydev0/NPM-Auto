@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
-import { display } from "./display.ts";
+import { display } from "./display.js";
 
 const SETTINGS_DIR = path.join(os.homedir(), ".npm-auto");
 const SETTINGS_FILE = path.join(SETTINGS_DIR, "settings.json");
@@ -41,9 +41,9 @@ export function getConfigPath(): string | void {
   try {
     const data = fs.readFileSync(SETTINGS_FILE, "utf8");
     const settings: Settings = JSON.parse(data);
-    return settings.configPath || "{}";
+    return settings.configPath || "";
   } catch (error: any) {
-    display(`Error reading config file: ${error.message}`, "error");
+    display(`Error reading config file path: ${error.message}`, "error");
   }
 }
 

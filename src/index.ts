@@ -1,12 +1,8 @@
 #!/usr/bin/env node
 
 import { Command } from "commander";
-import { saveConfigPath } from "./config_path.ts";
-import { display } from "./display.ts";
-import { getConfigObject } from "./config_reader.ts";
-import { buildCommands } from "./build_command.ts";
-import type { CommandResult, ConfigType } from "./types/index.ts";
-import { orchestrator } from "./orchestrator.ts";
+import { saveConfigPath } from "./config_path.js";
+import { orchestrator } from "./orchestrator.js";
 
 const program = new Command();
 
@@ -26,6 +22,10 @@ program
   .command("install [packages...]")
   .description("Install packages")
   .option("-p, --pkg-json", "Install packages from package.json")
+  .option(
+    "-A, --add-command <command>",
+    "Add a custom command to all installation commands from config file",
+  )
   .action((packages, options) => {
     orchestrator("install", packages, options);
   });

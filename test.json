@@ -24,7 +24,7 @@
 
   "next": {
     "name": "next",
-    "packageManager": "npm",
+    "packageManager": "yarn",
     "packages": [
       {
         "command": "three --save-dev",

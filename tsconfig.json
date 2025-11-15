@@ -2,9 +2,8 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist",
-
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
@@ -31,8 +30,8 @@
     // "noFallthroughCasesInSwitch": true,
     // "noPropertyAccessFromIndexSignature": true,
 
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
+    // "allowImportingTsExtensions": true,
+    // "noEmit": true,
 
     // Recommended Options
     "strict": true,
@@ -41,5 +40,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

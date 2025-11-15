@@ -1,10 +1,10 @@
 import fs from "fs/promises";
-import { getConfigPath } from "./config_path.ts";
+import { getConfigPath } from "./config_path.js";
 
 import * as fsd from "fs";
 import * as path from "path";
-import type { CommandResult, ConfigType } from "./types/index.ts";
-import { display } from "./display.ts";
+import type { CommandResult, ConfigType } from "./types/index.js";
+import { display } from "./display.js";
 
 type PackageManager = "npm" | "yarn" | "pnpm";
 
@@ -33,35 +33,50 @@ export function detectPackageManager(
 }
 
 /**
- * Get the command from config.json
+ * Get the installation commands from the config file, transforms into a js object and with the options given
+ * it modifies the object and returns it
  */
 export const getConfigObject = async (
-  packages: string[] | string,
-  pkgJson?: boolean,
+  packages: string[],
+  options?: any,
 ): Promise<ConfigType[] | CommandResult[]> => {
-  if (!pkgJson) {
+  if (!options.pkgJson) {
     const configPath = getConfigPath();
 
     //read config file content
-    const configContent = await fs.readFile(configPath as string, "utf8");
+    let configContent = "";
+    try {
+      configContent = await fs.readFile(configPath as string, "utf8");
+    } catch (error) {
+      display(`File not found ${error}`, "error");
+    }
     const configObject = JSON.parse(configContent);
 
-    //get the packages
-    if (packages instanceof Array) {
-      const result: ConfigType[] = packages.map((pkg) => {
-        if (!configObject[pkg]) {
-          display(
-            `Package ${pkg} not found in the configuration file`,
-            "warning",
-          );
-        }
-        return configObject[pkg];
+    //filter the packages the user wants to install
+    const result: ConfigType[] = packages.map((pkg) => {
+      if (!configObject[pkg]) {
+        display(
+          `Package ${pkg} not found in the configuration file`,
+          "warning",
+        );
+      }
+      return configObject[pkg];
+    });
+
+    /*
+     * Config object modification with the options given
+     */
+    //Add command to previous configured commands (-A/-add-command)
+    if (options.addCommand) {
+      result.forEach((config) => {
+        config.packages.forEach((pkg) => {
+          pkg.command = pkg.interactive
+            ? pkg.command
+            : pkg.command + " " + options.addCommand;
+        });
       });
-      return result;
-    } else {
-      const result = configObject[packages as string];
-      return result;
     }
+    return result;
   } else {
     //generate command for package.json
     const pm = detectPackageManager();

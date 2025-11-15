@@ -1,11 +1,26 @@
-import { buildCommands } from "./build_command.ts";
-import { getConfigObject } from "./config_reader.ts";
-import { display } from "./display.ts";
-import type { ConfigType, CommandResult } from "./types/index.ts";
+import { buildCommands } from "./build_command.js";
+import { getConfigObject } from "./config_reader.js";
+import { display } from "./display.js";
+import { install } from "./install.js";
+import type { ConfigType, CommandResult } from "./types/index.js";
+
+//Check if the value is an array of ConfigType objects
+function isConfigTypeArray(value: unknown): value is ConfigType[] {
+  return (
+    Array.isArray(value) &&
+    value.every(
+      (item) =>
+        typeof item === "object" &&
+        item !== null &&
+        "packages" in item &&
+        Array.isArray((item as any).packages),
+    )
+  );
+}
 
 export const orchestrator = (
   command: string,
-  packages: string | string[],
+  packages: string[],
   options: any,
 ) => {
   if (command === "install") {
@@ -13,22 +28,25 @@ export const orchestrator = (
       `Installing packages... ${options.pkgJson ? "from package.json" : (packages as string[]).join(", ")}`,
       "info",
     );
-    //Getting package installation commands
-    getConfigObject(packages, options.pkgJson).then(
-      (config: ConfigType[] | CommandResult[]) => {
-        if (config.length == 0) {
-          display("No configuration found", "error");
-        }
 
-        //if config object is from the config file
-        if ((config as ConfigType[])[0]?.packages) {
-          const commands = buildCommands(config as ConfigType[]);
-          console.log(commands);
-        } else {
-          //if it from package.json
-          console.log(config);
-        }
-      },
-    );
+    getConfigObject(packages, options).then(async (config) => {
+      if (config.length === 0) {
+        display("No configuration found", "error");
+        return;
+      }
+
+      if (isConfigTypeArray(config)) {
+        const commands = buildCommands(config);
+        await install(commands);
+        display("✅ Packages installed successfully", "success");
+      } else {
+        console.log(config);
+
+        display(
+          "✅ Packages from package.json installed successfully",
+          "success",
+        );
+      }
+    });
   }
 };

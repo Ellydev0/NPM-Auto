@@ -19,15 +19,16 @@
     "build": "tsc",
     "dev": "nodemon --exec ts-node src/index.ts",
     "start": "node dist/index.js",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest --watch"
   },
   "dependencies": {
     "chalk": "^5.6.2",
     "commander": "^14.0.2",
+    "execa": "^9.6.0",
     "ora": "^9.0.0"
   },
   "devDependencies": {
+    "@jest/globals": "^30.2.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.1",
     "jest": "^30.2.0",
