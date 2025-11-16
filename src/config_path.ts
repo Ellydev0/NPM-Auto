@@ -3,7 +3,7 @@ import * as path from "path";
 import * as os from "os";
 import { display } from "./display.js";
 
-const SETTINGS_DIR = path.join(os.homedir(), ".npm-auto");
+const SETTINGS_DIR = path.join(os.homedir(), ".pm-auto");
 const SETTINGS_FILE = path.join(SETTINGS_DIR, "settings.json");
 
 interface Settings {
@@ -32,7 +32,7 @@ export function getConfigPath(): string | void {
   //check if settings exists
   if (!fs.existsSync(SETTINGS_FILE)) {
     display(
-      "Run `npm-auto config <path>`, where <path> is the path to your config file",
+      "Run `pm-auto config <path>`, where <path> is the path to your config file",
       "info",
     );
     display("Config file path not set", "error");

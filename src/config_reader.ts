@@ -52,18 +52,20 @@ export const getConfigObject = async (
       display(`File not found ${error}`, "error");
     }
     const configObject = JSON.parse(configContent);
+    let result: ConfigType[] = Object.values(configObject);
 
     //filter the packages the user wants to install
-    const result: ConfigType[] = packages.map((pkg) => {
-      if (!configObject[pkg]) {
-        display(
-          `Package ${pkg} not found in the configuration file`,
-          "warning",
-        );
-      }
-      return configObject[pkg];
-    });
-
+    if (packages.length > 0) {
+      result = packages.map((pkg) => {
+        if (!configObject[pkg]) {
+          display(
+            `Package ${pkg} not found in the configuration file`,
+            "warning",
+          );
+        }
+        return configObject[pkg];
+      });
+    }
     /*
      * Config object modification with the options given
      */

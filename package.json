@@ -1,9 +1,9 @@
 {
-  "name": "npm-auto",
+  "name": "pm-auto",
   "version": "1.0.0",
   "description": "CLI for automated npm,yarn,pnpm package installation",
   "keywords": [
-    "npm-auto",
+    "pm-auto",
     "yarn-auto",
     "pnpm-auto",
     "auto"
@@ -13,7 +13,7 @@
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "npm-auto": "./dist/index.js"
+    "pm-auto": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",

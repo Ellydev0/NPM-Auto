@@ -7,7 +7,7 @@ import { orchestrator } from "./orchestrator.js";
 const program = new Command();
 
 program
-  .name("npm-auto")
+  .name("pm-auto")
   .version("1.0.0")
   .description("CLI for automated npm,yarn,pnpm package installation");
 
